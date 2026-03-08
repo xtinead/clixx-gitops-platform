@@ -258,5 +258,7 @@ The goal is to show how infrastructure, CI/CD, and GitOps can work together to p
 ## Author
 
 Christine Adelusi
+
 Senior DevOps / Platform Engineer
+
 AWS | Terraform | Kubernetes | GitOps | CI/CD

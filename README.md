@@ -216,5 +216,7 @@ It reflects production-oriented platform engineering practices.
 ## Author
 
 Christine Adelusi
+
 Senior DevOps / Platform Engineer
+
 AWS | Terraform | Kubernetes | GitOps | CI/CD
