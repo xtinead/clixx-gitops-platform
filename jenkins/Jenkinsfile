@@ -1,0 +1,99 @@
+pipeline {
+  agent any
+
+  environment {
+    AWS_REGION = 'us-east-1'
+    TF_ENV_DIR = 'terraform/environments/dev'
+    GITOPS_OVERLAY = 'gitops/apps/overlays/dev/clixx'
+    IMAGE_TAG = "${env.BUILD_NUMBER}"
+  }
+
+  options { timestamps() }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Lint / Validation') {
+      steps {
+        sh '''
+          echo "Run lint/tests here (portfolio-safe placeholder)"
+        '''
+      }
+    }
+
+    stage('Terraform Init/Validate') {
+      steps {
+        sh """
+          cd ${TF_ENV_DIR}
+          terraform init -input=false
+          terraform validate
+        """
+      }
+    }
+
+    stage('Terraform Plan') {
+      steps {
+        sh """
+          cd ${TF_ENV_DIR}
+          terraform plan -out=tfplan
+        """
+      }
+    }
+
+    stage('Approval Gate') {
+      steps {
+        input message: "Approve Terraform Apply?", ok: "Approve"
+      }
+    }
+
+    stage('Terraform Apply') {
+      steps {
+        sh """
+          cd ${TF_ENV_DIR}
+          terraform apply -auto-approve tfplan
+        """
+      }
+    }
+
+    stage('Update GitOps Manifests') {
+      steps {
+        sh """
+          echo "Updating GitOps overlay with new image tag: ${IMAGE_TAG}"
+          # Portfolio-safe example: change nginx:latest to nginx:${IMAGE_TAG}
+          sed -i 's|public.ecr.aws/nginx/nginx:latest|public.ecr.aws/nginx/nginx:${IMAGE_TAG}|' gitops/apps/base/clixx/deployment.yaml
+        """
+      }
+    }
+
+    stage('Commit & Push GitOps Change') {
+      steps {
+        sh """
+          git config user.email "ci@clixx.local"
+          git config user.name  "jenkins-ci"
+          git add gitops/apps/base/clixx/deployment.yaml
+          git commit -m "chore(gitops): bump image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+          git push origin HEAD:main
+        """
+      }
+    }
+
+    stage('Notify') {
+      steps {
+        echo "Notify Slack here (placeholder)"
+      }
+    }
+  }
+
+  post {
+    failure {
+      echo "Pipeline failed (placeholder for Slack failure notification)."
+    }
+    success {
+      echo "Pipeline succeeded (placeholder for Slack success notification)."
+    }
+  }
+}
