@@ -94,9 +94,9 @@ Detailed platform documentation is available below.
 
 ### Platform Design
 
-- [Platform Infrastructure Architecture](C:\apps\portfolio\clixx-gitops-platform\docs\platform-infra\architecture.md)
-- [GitOps Delivery Model](C:\apps\portfolio\clixx-gitops-platform\docs\platform-gitops\gitops-flow.md)
-- [CI/CD Orchestration](C:\apps\portfolio\clixx-gitops-platform\docs\ci-cd\jenkins-orchestration.md)
+[Platform Infrastructure Architecture](C:\apps\portfolio\clixx-gitops-platform\docs\platform-infra\architecture.md)
+[GitOps Delivery Model](C:\apps\portfolio\clixx-gitops-platform\docs\platform-gitops\gitops-flow.md)
+[CI/CD Orchestration](C:\apps\portfolio\clixx-gitops-platform\docs\ci-cd\jenkins-orchestration.md)
 
 ### Engineering Decisions
 
