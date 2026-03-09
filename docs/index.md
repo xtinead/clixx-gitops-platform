@@ -106,9 +106,11 @@ Detailed platform documentation is available below.
 
 ### Platform Evolution
 
-- [Platform Evolution](C:\apps\portfolio\clixx-gitops-platform\docs\platform-evolution.md)
-- [Lessons Learned](C:\apps\portfolio\clixx-gitops-platform\docs\lessons-learned.md)
-- [Platform Case Study](C:\apps\portfolio\clixx-gitops-platform\docs\case-study.md)
+ [Platform Evolution](C:\apps\portfolio\clixx-gitops-platform\docs\platform-evolution.md)
+
+[Lessons Learned](C:\apps\portfolio\clixx-gitops-platform\docs\lessons-learned.md)
+
+ [Platform Case Study](C:\apps\portfolio\clixx-gitops-platform\docs\case-study.md)
 
 ## Architecture Decisions
 
