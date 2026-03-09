@@ -1,4 +1,4 @@
-📘 Platform Evolution & Architectural Decisions
+# 📘 Platform Evolution & Architectural Decisions
 
 This platform has gone through multiple intentional iterations as requirements around safety, reproducibility, and blast-radius control became clearer.
 
