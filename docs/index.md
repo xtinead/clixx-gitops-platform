@@ -1,98 +1,60 @@
-# Clixx GitOps Platform Engineering Portfolio
+---
+layout: default
+title: Clixx GitOps Platform Engineering Portfolio
+---
 
-This repository documents the design, evolution, and operation of a production-style AWS + Kubernetes GitOps platform.
+# Clixx GitOps Platform Engineering Platform
 
-The platform demonstrates how to build a secure, reproducible infrastructure and delivery model using Terraform, Jenkins, and Argo CD.
+This repository documents the design, evolution, and operation of a **production-style AWS + Kubernetes GitOps platform**.
 
-Key areas of focus include:
+The platform demonstrates how modern platform engineering practices can be used to build **secure, reproducible infrastructure and controlled application delivery** using:
 
-- Platform safety and blast-radius control
+- **Terraform** for infrastructure provisioning
+- **Jenkins** for CI orchestration
+- **Argo CD** for GitOps reconciliation
+- **Kubernetes (EKS)** for runtime orchestration
 
-- Terraform state isolation and remote state safety
+The goal of this platform is to demonstrate how **Infrastructure as Code, CI/CD governance, and GitOps delivery** can work together to produce a **safe, auditable, and repeatable cloud platform.**
 
-- GitOps-driven delivery using Argo CD
+---
 
-- CI/CD orchestration with Jenkins
+# Platform At a Glance
 
-- Safe infrastructure rebuild and teardown strategies
+**Cloud Platform**
 
-## Platform Architecture
+AWS (VPC, EKS, IAM, ALB, EFS, RDS)
 
-The platform architecture separates responsibilities across infrastructure provisioning, CI orchestration, and runtime reconciliation.
+**Infrastructure as Code**
 
-This ensures infrastructure governance while maintaining a secure GitOps delivery model.
+Terraform modular architecture with remote state isolation
 
-## CI/CD Delivery Flow
+**CI/CD**
 
-The CI/CD pipeline orchestrates infrastructure changes and GitOps updates without granting Jenkins direct cluster access.
+Jenkins pipeline orchestration with approval gates
 
-Key characteristics:
+**GitOps**
 
-- Infrastructure changes gated by approval
+Argo CD pull-based deployment model
 
-- Jenkins updates GitOps manifests
+**Containers**
 
-- Argo CD reconciles cluster state
+Kubernetes (Amazon EKS)
 
-- Rollback handled via Git revert
+**Key Focus Areas**
 
-## Platform Architecture Layers
+- Infrastructure safety and blast radius control
+- Terraform state protection
+- CI isolation from production clusters
+- Git-based delivery governance
+- Safe infrastructure rebuild and teardown
 
-The platform is composed of three intentional layers.
+---
 
-1. Bootstrap Layer (Permanent)
-
-Provides foundational services that should never be destroyed.
-
-Includes:
-
-- Terraform backend (S3 + DynamoDB)
-
-- State locking and protection
-
-- Shared infrastructure prerequisites
-
-This layer guarantees that platform rebuilds remain safe.
-
-2. Platform Infrastructure Layer
-
-Responsible for provisioning AWS primitives using Terraform.
-
-Components include:
-
-- VPC and networking
-
-- Amazon EKS cluster
-
-- IAM roles and policies
-
-- RDS and EFS where required
-
-- ALB ingress infrastructure
-
-Infrastructure changes are governed through CI approval gates.
-
-3. Platform GitOps Layer
-
-Responsible for application delivery.
-
-Managed through:
-
-- Argo CD
-
-- GitOps manifests
-
-- Environment overlays
-
-All runtime changes originate from Git.
-
-There are no direct kubectl deployments from CI.
-
-## Documentation Map
+# Documentation Map
 
 Detailed platform documentation is available below.
 
-### Platform Design
+## Platform Design
 
 - [Platform Infrastructure Architecture](platform-infra/architecture.md)
 
@@ -100,7 +62,7 @@ Detailed platform documentation is available below.
 
 - [CI/CD Orchestration](ci-cd/jenkins-orchestration.md)
 
-### Engineering Decisions
+## Engineering Decisions
 
 - [Pipeline Design Decisions](ci-cd/pipeline-design-decisions.md)
 
@@ -108,7 +70,7 @@ Detailed platform documentation is available below.
 
 - [Teardown & Rebuild Strategy](platform-infra/teardown-rebuild.md)
 
-### Platform Evolution
+## Platform Evolution
 
 - [Platform Evolution](platform-evolution.md)
 
@@ -116,7 +78,11 @@ Detailed platform documentation is available below.
 
 - [Platform Case Study](case-study.md)
 
-## Architecture Decisions
+---
+
+# Architecture Decision Records (ADR)
+
+Key architectural decisions made during the development of this platform are documented below.
 
 - [ADR-0001: Use GitOps for Runtime Delivery](adr/0001-use-gitops-for-runtime-delivery.md)
 
@@ -126,78 +92,141 @@ Detailed platform documentation is available below.
 
 - [ADR-0004: Require Manual Approval Before Terraform Apply](adr/0004-require-manual-approval-before-terraform-apply.md)
 
-## Real Engineering Challenges Solved
+---
+
+# Platform Architecture
+
+The platform architecture intentionally separates responsibilities across infrastructure provisioning, CI orchestration, and runtime reconciliation.
+
+This separation allows infrastructure governance to remain controlled while still enabling automated application delivery.
+
+## Platform Architecture Layers
+
+The platform is composed of **three intentional layers**.
+
+### 1. Bootstrap Layer (Permanent)
+
+Provides foundational services that should never be destroyed.
+
+Includes:
+
+- Terraform backend (S3 + DynamoDB)
+- State locking and protection
+- Shared infrastructure prerequisites
+
+This layer guarantees that platform rebuilds remain safe.
+
+---
+
+### 2. Platform Infrastructure Layer
+
+Responsible for provisioning AWS primitives using Terraform.
+
+Components include:
+
+- VPC and networking
+- Amazon EKS cluster
+- IAM roles and policies
+- RDS and EFS where required
+- ALB ingress infrastructure
+
+Infrastructure changes are governed through **CI approval gates**.
+
+---
+
+### 3. Platform GitOps Layer
+
+Responsible for application delivery.
+
+Managed through:
+
+- Argo CD
+- GitOps manifests
+- Environment overlays
+
+All runtime changes originate from Git.
+
+There are **no direct kubectl deployments from CI pipelines**.
+
+---
+
+# CI/CD Delivery Flow
+
+The CI/CD pipeline orchestrates infrastructure changes and GitOps updates **without granting Jenkins direct cluster access**.
+
+### Delivery Flow
+
+1. Terraform changes are proposed and reviewed
+2. CI pipeline validates infrastructure changes
+3. Manual approval gate is required before apply
+4. Jenkins updates GitOps manifests
+5. Argo CD reconciles the cluster state
+6. Rollbacks occur via Git revert
+
+This model ensures **secure separation between CI systems and production clusters.**
+
+---
+
+# Real Engineering Challenges Solved
 
 During the development of this platform, several real-world infrastructure and delivery challenges were encountered and addressed.
 
-### Terraform State Safety
+---
+
+## Terraform State Safety
 
 One of the early risks identified was accidental deletion of Terraform state infrastructure during platform teardown.
 
-To mitigate this, the platform was redesigned to introduce a Bootstrap Layer responsible for:
+To mitigate this risk, the platform introduced a **Bootstrap Layer** responsible for:
 
 - Terraform state storage (S3)
-
 - State locking (DynamoDB)
 
-This layer is permanent and prevents destructive operations from impacting Terraform state integrity.
+This layer is **permanent** and prevents destructive operations from impacting Terraform state integrity.
+
+---
 
 ## Infrastructure Rebuild Reliability
 
 Infrastructure teardown and rebuild scenarios were tested to ensure platform resilience.
 
-The architecture was refactored to ensure:
+The architecture was refactored to guarantee:
 
 - Safe destruction of platform infrastructure
-
 - Reprovisioning without manual intervention
-
 - No dependency conflicts during rebuild
 
-This allows the platform to be recreated from scratch using Terraform.
+This allows the platform to be recreated **entirely from Terraform code**.
+
+---
 
 ## Eliminating Direct Cluster Access from CI
 
-A common anti-pattern in CI/CD pipelines is granting the CI system direct kubectl access to production clusters.
+A common anti-pattern in CI/CD pipelines is granting CI systems direct `kubectl` access to production clusters.
 
-To improve security, this platform enforces a strict separation:
+To improve security, this platform enforces strict separation:
 
 - Jenkins orchestrates infrastructure and Git updates
-
 - Argo CD performs runtime reconciliation
+- Jenkins never interacts directly with the Kubernetes API
 
-Jenkins never interacts directly with the Kubernetes API.
+This significantly reduces the **blast radius of CI credentials**.
 
-This significantly reduces the blast radius of CI credentials.
+---
 
 ## GitOps Drift Detection
 
-Runtime drift was addressed using Argo CD reconciliation.
+Runtime drift is addressed using Argo CD reconciliation.
 
-If cluster state diverges from the Git repository:
+If cluster state diverges from Git:
 
 - Argo CD detects the drift
-
 - The cluster is automatically reconciled
-
 - Unauthorized changes are reverted
 
-This ensures Git remains the single source of truth.
+Git remains the **single source of truth**.
 
-## Controlled Infrastructure Changes
-
-Terraform changes are not automatically applied.
-
-The CI/CD pipeline requires a manual approval gate before infrastructure changes are executed.
-
-This prevents:
-
-- Accidental infrastructure modification
-
-- Unreviewed production changes
-
-- Unsafe Terraform applies
-
+---
 
 # Platform Engineering Skills Demonstrated
 
@@ -248,27 +277,26 @@ This project demonstrates practical experience across several key areas of moder
 - Version-controlled rollback strategy
 - Infrastructure blast-radius control
 
+---
 
-## Why This Platform Exists
+# Why This Platform Exists
 
-This repository demonstrates real-world DevOps and platform engineering practices, including:
+This repository demonstrates **real-world DevOps and platform engineering practices**, including:
 
 - Infrastructure modularization
-
 - GitOps-based deployment
-
 - CI/CD governance controls
-
 - Cloud-native architecture
-
 - Secure runtime delivery patterns
 
-The goal is to show how infrastructure, CI/CD, and GitOps can work together to produce a safe and repeatable platform engineering workflow.
+The goal is to demonstrate how infrastructure, CI/CD, and GitOps can work together to produce a **safe and repeatable platform engineering workflow.**
 
-## Author
+---
 
-Christine Adelusi
+# Author
+
+**Christine Adelusi**
 
 Senior DevOps / Platform Engineer
 
-AWS | Terraform | Kubernetes | GitOps | CI/CD
+AWS • Terraform • Kubernetes • GitOps • CI/CD
