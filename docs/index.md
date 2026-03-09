@@ -94,7 +94,7 @@ Detailed platform documentation is available below.
 
 ### Platform Design
 
-- [Platform Infrastructure Architecture](platform-infra\architecture.md)
+- [Platform Infrastructure Architecture](/docs/platform-infra\architecture.md) 
 
 - [GitOps Delivery Model](platform-gitops\gitops-flow.md)
 
