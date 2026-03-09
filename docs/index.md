@@ -94,28 +94,37 @@ Detailed platform documentation is available below.
 
 ### Platform Design
 
-- [Platform Infrastructure Architecture](docs\platform-infra\architecture.md)
-- [GitOps Delivery Model](docs\platform-gitops\gitops-flow.md)
-- [CI/CD Orchestration](docs\ci-cd\jenkins-orchestration.md)
+- [Platform Infrastructure Architecture](C:\apps\portfolio\clixx-gitops-platform\docs\platform-infra\architecture.md)
+
+- [GitOps Delivery Model](C:\apps\portfolio\clixx-gitops-platform\docs\platform-gitops\gitops-flow.md)
+
+- [CI/CD Orchestration](C:\apps\portfolio\clixx-gitops-platform\docs\ci-cd\jenkins-orchestration.md)
 
 ### Engineering Decisions
 
-- [Pipeline Design Decisions](docs\ci-cd\pipeline-design-decisions.md)
-- [Security Model](docs\platform-infra\security-model.md)
-- [Teardown & Rebuild Strategy](docs\platform-infra\teardown-rebuild.md)
+- [Pipeline Design Decisions](C:\apps\portfolio\clixx-gitops-platform\docs\ci-cd\pipeline-design-decisions.md)
+
+- [Security Model](C:\apps\portfolio\clixx-gitops-platform\docs\platform-infra\security-model.md)
+
+- [Teardown & Rebuild Strategy](C:\apps\portfolio\clixx-gitops-platform\docs\platform-infra\teardown-rebuild.md)
 
 ### Platform Evolution
 
-- [Platform Evolution](docs\platform-evolution.md)
+- [Platform Evolution](C:\apps\portfolio\clixx-gitops-platform\docs\platform-evolution.md)
+
 - [Lessons Learned](C:\apps\portfolio\clixx-gitops-platform\docs\lessons-learned.md)
+
 - [Platform Case Study](C:\apps\portfolio\clixx-gitops-platform\docs\case-study.md)
 
 ## Architecture Decisions
 
-- [ADR-0001: Use GitOps for Runtime Delivery](adr/0001-use-gitops-for-runtime-delivery.md)
-- [ADR-0002: Isolate Terraform State into a Bootstrap Layer](adr/0002-isolate-terraform-state-bootstrap.md)
-- [ADR-0003: Prevent Jenkins from Deploying Directly to Kubernetes](adr/0003-prevent-jenkins-direct-cluster-access.md)
-- [ADR-0004: Require Manual Approval Before Terraform Apply](adr/0004-require-manual-approval-before-terraform-apply.md)
+- [ADR-0001: Use GitOps for Runtime Delivery](C:\apps\portfolio\clixx-gitops-platform\docs\adr\0001-use-gitops-for-runtime-delivery.md)
+
+- [ADR-0002: Isolate Terraform State into a Bootstrap Layer](C:\apps\portfolio\clixx-gitops-platform\docs\adr\0002-isolate-terraform-state-bootstrap.md)
+
+- [ADR-0003: Prevent Jenkins from Deploying Directly to Kubernetes](C:\apps\portfolio\clixx-gitops-platform\docs\adr\0003-prevent-jenkins-direct-cluster-access.md)
+
+- [ADR-0004: Require Manual Approval Before Terraform Apply](C:\apps\portfolio\clixx-gitops-platform\docs\adr\0004-require-manual-approval-before-terraform-apply.md)
 
 ## Real Engineering Challenges Solved
 
