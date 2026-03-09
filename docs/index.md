@@ -94,19 +94,19 @@ Detailed platform documentation is available below.
 
 ### Platform Design
 
-- [Platform Infrastructure Architecture](platform-infra\architecture.md) 
+- [Platform Infrastructure Architecture](platform-infra/architecture.md)
 
-- [GitOps Delivery Model](platform-gitops\gitops-flow.md)
+- [GitOps Delivery Model](platform-gitops/gitops-flow.md)
 
-- [CI/CD Orchestration](ci-cd\jenkins-orchestration.md)
+- [CI/CD Orchestration](ci-cd/jenkins-orchestration.md)
 
 ### Engineering Decisions
 
-- [Pipeline Design Decisions](ci-cd\pipeline-design-decisions.md)
+- [Pipeline Design Decisions](ci-cd/pipeline-design-decisions.md)
 
-- [Security Model](platform-infra\security-model.md)
+- [Security Model](platform-infra/security-model.md)
 
-- [Teardown & Rebuild Strategy](platform-infra\teardown-rebuild.md)
+- [Teardown & Rebuild Strategy](platform-infra/teardown-rebuild.md)
 
 ### Platform Evolution
 
