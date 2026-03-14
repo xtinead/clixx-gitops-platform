@@ -50,6 +50,47 @@ Kubernetes (Amazon EKS)
 
 ---
 
+---
+
+# Architecture Diagrams
+
+The following diagrams illustrate the core architecture and delivery model of the platform.
+
+These visuals provide a high-level overview of how infrastructure provisioning, CI/CD orchestration, and GitOps reconciliation work together.
+
+---
+
+## Platform Architecture Overview
+
+![Clixx GitOps Platform Architecture](assets/images/01-clixx-gitops-platform-architecture.png)
+
+This diagram shows the high-level platform architecture, including:
+
+- AWS infrastructure components
+- Amazon EKS cluster
+- Terraform infrastructure provisioning
+- Jenkins CI orchestration
+- Argo CD GitOps reconciliation
+- Application delivery flow
+
+---
+
+## Jenkins CI/CD GitOps Delivery Model
+
+![Jenkins CI/CD GitOps Delivery Model](assets/images/02-jenkins-cicd-gitops-delivery-model.png)
+
+This diagram illustrates the CI/CD delivery pipeline and how GitOps controls runtime deployments.
+
+Key characteristics include:
+
+- Jenkins pipeline orchestration
+- Terraform validation and apply workflow
+- GitOps repository updates
+- Argo CD pull-based reconciliation
+- Secure separation between CI and Kubernetes clusters
+
+---
+
 # Documentation Map
 
 Detailed platform documentation is available below.
