@@ -3,7 +3,6 @@ layout: default
 title: Clixx GitOps Platform Engineering Portfolio
 ---
 
-# Clixx GitOps Platform Engineering Portfolio
 
 This repository documents the design, evolution, operation, and tested recovery of a **production-style AWS and Kubernetes GitOps platform**.
 

@@ -1,4 +1,7 @@
-# Disaster Recovery Validation
+---
+layout: default
+title: Disaster Recovery Validation
+---
 
 ## Executive summary
 
