@@ -402,6 +402,7 @@ The platform demonstrates a **safe, recoverable, observable, and repeatable deli
 # Author
 
 **Christine Adelusi**
+
 Senior DevOps / Platform Engineer
 
 AWS · Terraform · Kubernetes · Jenkins · Argo CD · GitOps · CI/CD · Prometheus · Grafana
