@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Teardown and Rebuild Runbook
+title: "Teardown and Rebuild Runbook"
 ---
 
 This runbook documents the tested teardown, disaster-recovery, and rebuild procedure for the Clixx GitOps platform. It is based on a full recovery exercise completed on September 25, 2026, rather than a theoretical design.

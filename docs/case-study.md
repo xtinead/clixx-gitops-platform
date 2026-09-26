@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Clixx GitOps Platform Case Study"
+---
+
 ## Executive summary
 
 The Clixx platform is a production-style AWS Kubernetes environment designed to demonstrate secure infrastructure delivery, pull-based GitOps, persistent-data recovery, observability, and controlled operations.

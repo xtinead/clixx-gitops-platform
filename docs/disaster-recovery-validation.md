@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Disaster Recovery Validation
+title: "Disaster Recovery Validation"
 ---
 
 ## Executive summary
