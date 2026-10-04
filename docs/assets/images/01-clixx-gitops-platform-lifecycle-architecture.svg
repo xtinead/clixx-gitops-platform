@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Clixx GitOps platform lifecycle architecture</title>
+  <desc id="desc">Architecture showing external Terraform state, bootstrap identities, protected shared foundations, replaceable platform infrastructure, GitOps control plane, runtime applications, and recovery paths.</desc>
+  <defs>
+    <style>
+      .bg{fill:#071521}.panel{fill:#0d2230;stroke:#315267;stroke-width:2}.foundation{fill:#102c33;stroke:#44d7bc;stroke-width:2}.replaceable{fill:#10263a;stroke:#68aee8;stroke-width:2}.protected{fill:#2b2818;stroke:#e8be58;stroke-width:2}.runtime{fill:#14263a;stroke:#a8b7c4;stroke-width:2}.title{fill:#eef7f7;font:700 34px Arial,sans-serif}.subtitle{fill:#9fb5c2;font:18px Arial,sans-serif}.h{fill:#eef7f7;font:700 21px Arial,sans-serif}.t{fill:#b8c9d2;font:16px Arial,sans-serif}.small{fill:#91a8b5;font:14px Arial,sans-serif}.label{fill:#44d7bc;font:700 15px Arial,sans-serif;letter-spacing:1px}.arrow{stroke:#8da8b6;stroke-width:3;fill:none;marker-end:url(#end)}.recovery{stroke:#e8be58;stroke-width:3;fill:none;stroke-dasharray:9 7;marker-end:url(#endGold)}.git{stroke:#44d7bc;stroke-width:3;fill:none;marker-end:url(#endGreen)}
+    </style>
+    <marker id="end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8da8b6"/></marker>
+    <marker id="endGold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8be58"/></marker>
+    <marker id="endGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#44d7bc"/></marker>
+  </defs>
+  <rect class="bg" width="1600" height="1000"/>
+  <text class="title" x="70" y="65">Clixx GitOps Platform — Lifecycle Architecture</text>
+  <text class="subtitle" x="70" y="98">Ownership is separated by lifecycle so runtime infrastructure can be rebuilt without destroying state, artifacts, DNS, or recovery controls.</text>
+
+  <rect class="panel" x="70" y="140" width="300" height="160" rx="14"/>
+  <text class="label" x="95" y="174">ENGINEERING CONTROL</text>
+  <text class="h" x="95" y="211">Git repositories</text>
+  <text class="t" x="95" y="241">Terraform • GitOps manifests</text>
+  <text class="h" x="95" y="274">Jenkins orchestration</text>
+  <text class="small" x="95" y="296">Plans • approvals • recovery</text>
+
+  <rect class="foundation" x="455" y="140" width="420" height="160" rx="14"/>
+  <text class="label" x="480" y="174">EXTERNAL PREREQUISITE</text>
+  <text class="h" x="480" y="211">Remote-state foundation</text>
+  <text class="t" x="480" y="244">Amazon S3 state storage</text>
+  <text class="t" x="480" y="271">DynamoDB state locking</text>
+  <text class="small" x="480" y="294">Long-lived and not owned by platform teardown</text>
+
+  <rect class="foundation" x="960" y="140" width="570" height="160" rx="14"/>
+  <text class="label" x="985" y="174">BOOTSTRAP TRUST CHAIN</text>
+  <text class="h" x="985" y="211">Execution identities</text>
+  <text class="t" x="985" y="244">bootstrap — workload-account Terraform role</text>
+  <text class="t" x="985" y="271">dns-bootstrap — DNS-account Terraform role</text>
+  <text class="small" x="985" y="294">Temporary AWS STS sessions; no static kubeconfig</text>
+
+  <rect class="protected" x="70" y="380" width="1460" height="180" rx="14"/>
+  <text class="label" x="95" y="417">SHARED PROTECTED FOUNDATIONS — PRESERVED DURING RUNTIME TEARDOWN</text>
+  <rect class="panel" x="95" y="445" width="400" height="85" rx="10"/>
+  <text class="h" x="120" y="480">artifact-registry</text><text class="t" x="120" y="508">Amazon ECR • immutable images • scanning</text>
+  <rect class="panel" x="600" y="445" width="400" height="85" rx="10"/>
+  <text class="h" x="625" y="480">dns-account</text><text class="t" x="625" y="508">Cross-account Route 53 runtime trust</text>
+  <rect class="panel" x="1105" y="445" width="400" height="85" rx="10"/>
+  <text class="h" x="1130" y="480">data-protection</text><text class="t" x="1130" y="508">AWS Backup vault • lock • plan • selection</text>
+
+  <rect class="replaceable" x="70" y="645" width="720" height="210" rx="14"/>
+  <text class="label" x="95" y="682">REPLACEABLE RUNTIME FOUNDATION</text>
+  <text class="h" x="95" y="720">platform-infra</text>
+  <text class="t" x="95" y="752">VPC • private/public subnets • routing</text>
+  <text class="t" x="95" y="780">Amazon EKS • managed nodes • IAM/OIDC</text>
+  <text class="t" x="95" y="808">Amazon RDS • Amazon EFS • EKS add-ons</text>
+  <text class="small" x="95" y="837">Controllers: ALB • ExternalDNS • EFS CSI</text>
+
+  <rect class="replaceable" x="850" y="645" width="330" height="210" rx="14"/>
+  <text class="label" x="875" y="682">GITOPS CONTROL PLANE</text>
+  <text class="h" x="875" y="720">platform-gitops</text>
+  <text class="t" x="875" y="752">Argo CD foundation</text>
+  <text class="t" x="875" y="780">Root application</text>
+  <text class="small" x="875" y="811">Two-phase bootstrap</text>
+
+  <rect class="runtime" x="1240" y="645" width="290" height="210" rx="14"/>
+  <text class="label" x="1265" y="682">RUNTIME DELIVERY</text>
+  <text class="h" x="1265" y="720">Argo CD reconciliation</text>
+  <text class="t" x="1265" y="752">Clixx application</text>
+  <text class="t" x="1265" y="780">External Secrets</text>
+  <text class="t" x="1265" y="808">Prometheus • Grafana • HPA</text>
+
+  <path class="arrow" d="M370 220H455"/><path class="arrow" d="M875 220H960"/>
+  <path class="arrow" d="M220 300V380"/><path class="arrow" d="M665 300V380"/><path class="arrow" d="M1245 300V380"/>
+  <path class="arrow" d="M430 560V645"/><path class="arrow" d="M1015 560V645"/><path class="arrow" d="M1180 750H1240"/>
+  <path class="git" d="M220 300C220 610 1015 560 1015 645"/>
+  <path class="recovery" d="M1305 530C1305 610 670 600 670 645"/>
+
+  <text class="small" x="70" y="925">Solid arrows: provisioning and reconciliation relationships</text>
+  <text class="small" x="70" y="952" fill="#e8be58">Dashed gold arrow: protected backup and recovery path to reconstructed storage</text>
+  <text class="small" x="930" y="925">Jenkins: exceptional lifecycle administration</text>
+  <text class="small" x="930" y="952">Argo CD: routine application delivery authority</text>
+</svg>

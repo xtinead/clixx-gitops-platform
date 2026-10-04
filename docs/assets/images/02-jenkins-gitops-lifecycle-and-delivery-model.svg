@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" role="img" aria-labelledby="title desc">
+  <title id="title">Clixx Jenkins lifecycle and GitOps delivery model</title>
+  <desc id="desc">Workflow separating reviewed Terraform lifecycle operations and exceptional recovery administration from Argo CD routine application delivery.</desc>
+  <defs>
+    <style>.bg{fill:#071521}.box{fill:#0d2230;stroke:#315267;stroke-width:2}.jenkins{fill:#10263a;stroke:#68aee8;stroke-width:2}.approval{fill:#2b2818;stroke:#e8be58;stroke-width:2}.argo{fill:#102c33;stroke:#44d7bc;stroke-width:2}.warn{fill:#321f29;stroke:#e27b9c;stroke-width:2}.title{fill:#eef7f7;font:700 34px Arial,sans-serif}.subtitle{fill:#9fb5c2;font:18px Arial,sans-serif}.h{fill:#eef7f7;font:700 20px Arial,sans-serif}.t{fill:#b8c9d2;font:16px Arial,sans-serif}.small{fill:#91a8b5;font:14px Arial,sans-serif}.label{fill:#44d7bc;font:700 15px Arial,sans-serif;letter-spacing:1px}.a{stroke:#8da8b6;stroke-width:3;fill:none;marker-end:url(#e)}.g{stroke:#44d7bc;stroke-width:3;fill:none;marker-end:url(#eg)}.d{stroke:#e8be58;stroke-width:3;fill:none;stroke-dasharray:9 7;marker-end:url(#ey)}</style>
+    <marker id="e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8da8b6"/></marker>
+    <marker id="eg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#44d7bc"/></marker>
+    <marker id="ey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#e8be58"/></marker>
+  </defs>
+  <rect class="bg" width="1600" height="1050"/>
+  <text class="title" x="70" y="65">Clixx Platform — Jenkins Lifecycle and GitOps Delivery Model</text>
+  <text class="subtitle" x="70" y="98">Jenkins governs infrastructure lifecycle and exceptional recovery; Argo CD remains the routine Kubernetes delivery authority.</text>
+
+  <text class="label" x="70" y="155">INFRASTRUCTURE LIFECYCLE — JENKINS + TERRAFORM</text>
+  <rect class="box" x="70" y="180" width="250" height="150" rx="14"/><text class="h" x="95" y="220">1. Reviewed change</text><text class="t" x="95" y="253">Git revision</text><text class="t" x="95" y="280">Layer • action • environment</text><text class="small" x="95" y="308">Explicit lifecycle parameters</text>
+  <rect class="jenkins" x="380" y="180" width="250" height="150" rx="14"/><text class="h" x="405" y="220">2. Preflight</text><text class="t" x="405" y="253">AWS STS role assumption</text><text class="t" x="405" y="280">Caller and backend checks</text><text class="small" x="405" y="308">Temporary credentials</text>
+  <rect class="jenkins" x="690" y="180" width="250" height="150" rx="14"/><text class="h" x="715" y="220">3. Saved plan</text><text class="t" x="715" y="253">Init • validate • plan</text><text class="t" x="715" y="280">Isolated backend key</text><text class="small" x="715" y="308">Reviewed immutable plan</text>
+  <rect class="approval" x="1000" y="180" width="250" height="150" rx="14"/><text class="h" x="1025" y="220">4. Approval gate</text><text class="t" x="1025" y="253">Identity and timestamp</text><text class="t" x="1025" y="280">Extra destroy safeguards</text><text class="small" x="1025" y="308">Fail closed on mismatch</text>
+  <rect class="jenkins" x="1310" y="180" width="220" height="150" rx="14"/><text class="h" x="1335" y="220">5. Apply</text><text class="t" x="1335" y="253">Approved saved plan</text><text class="t" x="1335" y="280">Post-run verification</text><text class="small" x="1335" y="308">Audit record retained</text>
+  <path class="a" d="M320 255H380"/><path class="a" d="M630 255H690"/><path class="a" d="M940 255H1000"/><path class="a" d="M1250 255H1310"/>
+
+  <text class="label" x="70" y="405">LAYER-AWARE OUTCOMES</text>
+  <rect class="box" x="70" y="430" width="330" height="160" rx="14"/><text class="h" x="95" y="470">Protected foundations</text><text class="t" x="95" y="502">bootstrap • dns-bootstrap</text><text class="t" x="95" y="530">dns-account • artifact-registry</text><text class="t" x="95" y="558">data-protection</text>
+  <rect class="box" x="455" y="430" width="330" height="160" rx="14"/><text class="h" x="480" y="470">Replaceable platform</text><text class="t" x="480" y="502">platform-infra</text><text class="t" x="480" y="530">VPC • EKS • RDS • EFS</text><text class="small" x="480" y="558">Reconstructed from Terraform</text>
+  <rect class="box" x="840" y="430" width="330" height="160" rx="14"/><text class="h" x="865" y="470">GitOps bootstrap</text><text class="t" x="865" y="502">Phase 1: Argo CD foundation</text><text class="t" x="865" y="530">Phase 2: root application</text><text class="small" x="865" y="558">Wait for Application CRD</text>
+  <rect class="warn" x="1225" y="430" width="305" height="160" rx="14"/><text class="h" x="1250" y="470">Exceptional operations</text><text class="t" x="1250" y="502">Prune • inspect • restore</text><text class="t" x="1250" y="530">Credential publication</text><text class="small" x="1250" y="558">Controlled Kubernetes API access</text>
+  <path class="a" d="M1420 330V390H235V430"/><path class="a" d="M1420 390H620V430"/><path class="a" d="M1420 390H1005V430"/><path class="d" d="M1420 330V430"/>
+
+  <text class="label" x="70" y="675">ROUTINE APPLICATION DELIVERY — GITOPS</text>
+  <rect class="argo" x="70" y="700" width="330" height="170" rx="14"/><text class="h" x="95" y="740">GitOps repository</text><text class="t" x="95" y="772">Declarative desired state</text><text class="t" x="95" y="800">Reviewed application changes</text><text class="small" x="95" y="837">Rollback through Git history</text>
+  <rect class="argo" x="520" y="700" width="330" height="170" rx="14"/><text class="h" x="545" y="740">Argo CD</text><text class="t" x="545" y="772">Pull • compare • reconcile</text><text class="t" x="545" y="800">Health and sync status</text><text class="small" x="545" y="837">No competing Jenkins ownership</text>
+  <rect class="argo" x="970" y="700" width="560" height="170" rx="14"/><text class="h" x="995" y="740">Amazon EKS runtime</text><text class="t" x="995" y="772">Clixx • External Secrets • monitoring • HPA</text><text class="t" x="995" y="800">ExternalDNS reconciles Route 53 records</text><text class="small" x="995" y="837">Prometheus, Grafana, and AWS APIs verify health</text>
+  <path class="g" d="M400 785H520"/><path class="g" d="M850 785H970"/>
+  <path class="d" d="M1005 590V650H685V700"/>
+
+  <rect class="warn" x="70" y="925" width="1460" height="70" rx="12"/>
+  <text class="h" x="95" y="968">Boundary:</text><text class="t" x="205" y="968">Jenkins does not make routine persistent application changes with kubectl; privileged cluster access is limited to approved bootstrap, teardown, recovery, and verification workflows.</text>
+</svg>
