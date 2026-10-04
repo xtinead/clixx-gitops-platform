@@ -20,16 +20,23 @@ The procedure demonstrates that the platform can be removed and rebuilt while pr
 
 ## Scope and ownership
 
-| Layer | Owner | Responsibilities |
-|---|---|---|
-| Bootstrap | Terraform | Remote state bucket and locking configuration |
-| Platform infrastructure | Terraform | VPC, EKS, IAM, RDS, EFS, storage classes, and controllers |
-| GitOps foundation | Terraform and Helm | Argo CD namespace, release, ingress, repository secret, and root application |
-| Runtime applications | Argo CD | Clixx, monitoring, metrics-server, and External Secrets resources |
-| Recovery orchestration | Jenkins | Approval gates and controlled lifecycle/recovery operations |
-| Application data | RDS, EFS, AWS Backup | Database and WordPress media durability |
+| Domain | Owner | Responsibilities | Lifecycle treatment |
+|---|---|---|---|
+| Remote-state foundation | External prerequisite | S3 backend and DynamoDB locking | Permanent |
+| Workload identity bootstrap | Terraform `bootstrap` root | Workload Terraform execution role and scoped IAM-management permissions | Foundational administrative procedure |
+| DNS identity bootstrap | Terraform `dns-bootstrap` root | DNS Terraform execution role and narrow cross-account IAM-management permissions | Foundational administrative procedure |
+| Cross-account DNS | Terraform `dns-account` root | Route 53 runtime role and ExternalDNS policy | Shared; destruction blocked |
+| Artifact registry | Terraform `artifact-registry` root | ECR repository, image immutability, scanning, policy, and retention | Shared; destruction blocked |
+| Platform infrastructure | Terraform `platform-infra` root | VPC, EKS, IAM, RDS, EFS, storage classes, add-ons, and controllers | Environment-specific; replaceable |
+| Data protection | Terraform `data-protection` root | AWS Backup role, vault, vault lock, plan, retention, and EFS selection | Shared; destruction blocked |
+| GitOps control plane | Terraform `platform-gitops` root | Argo CD namespace, release, ingress, repository credential, and root application | Environment-specific; replaceable |
+| Runtime applications | Argo CD | Clixx, monitoring, Metrics Server, External Secrets, and application resources | Continuously reconciled |
+| Recovery orchestration | Jenkins and versioned scripts | Approval gates, teardown, EFS recovery, Argo CD bootstrap, and verification | On demand |
+| Application data | RDS, EFS, snapshots, and AWS Backup | Database and WordPress media durability | Protected independently |
 
-Jenkins does not own routine application delivery. Argo CD performs continuous pull-based reconciliation. Jenkins receives controlled privileged access only for infrastructure bootstrap, teardown pruning, recovery operations, and secure credential publication. The human Engineer role remains read-only.
+The remote-state services are externally established prerequisites; the current Terraform `bootstrap` root creates the workload execution identity rather than the backend itself.
+
+Jenkins does not own routine application delivery. Argo CD performs continuous pull-based reconciliation. Jenkins receives controlled privileged access only for lifecycle readiness, teardown pruning, recovery operations, two-phase Argo CD bootstrap, secure credential publication, and verification. The human Engineer role remains read-only.
 
 ## Recovery objectives
 
@@ -44,7 +51,7 @@ The recovery point used in this validation contained:
 
 ## Safety rules
 
-1. Never destroy the bootstrap state layer as part of an application-platform teardown.
+1. Never destroy or modify the external remote-state foundation as part of an application-platform teardown.
 2. Validate database and filesystem recovery sources before approving destruction.
 3. Preserve RDS deletion protection until the explicit unlock stage is approved.
 4. Use saved Terraform plans and manual approval gates for apply and destroy operations.
@@ -108,7 +115,9 @@ The Jenkins pipeline uses `scripts/select-rds-restore-snapshot.sh` to choose the
 Record the current filesystem ARN and find the newest completed recovery point in the protected backup vault.
 
 ```bash
-OLD_EFS_ARN="arn:aws:elasticfilesystem:${AWS_REGION}:ACCOUNT_ID:file-system/FILE_SYSTEM_ID"
+AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+
+OLD_EFS_ARN="arn:aws:elasticfilesystem:${AWS_REGION}:${AWS_ACCOUNT_ID}:file-system/FILE_SYSTEM_ID"
 
 EFS_RECOVERY_POINT_ARN="$(
   aws backup list-recovery-points-by-resource \
@@ -142,7 +151,7 @@ The required order is:
 2. destroy the platform-gitops layer;
 3. explicitly unlock RDS protection;
 4. destroy the platform-infra layer;
-5. preserve the bootstrap layer and recovery artifacts.
+5. preserve remote state, execution identities, DNS authorization, ECR, backup controls, secrets, and recovery artifacts.
 
 ### 4. Prune GitOps workloads
 
@@ -164,10 +173,14 @@ Run the approved `platform-infra` destroy workflow only after GitOps pruning and
 
 Do not destroy:
 
-- the S3 Terraform state bucket;
-- the state-locking resources;
+- the external S3 Terraform state bucket;
+- the external DynamoDB state-locking table;
+- the workload and DNS execution-identity bootstrap resources;
+- the cross-account DNS role and policy;
+- the ECR artifact registry or rebuild-critical images;
+- the AWS Backup plan, vault, vault lock, or service role;
 - protected RDS snapshots;
-- the AWS Backup vault or EFS recovery point;
+- protected EFS recovery points;
 - secrets required for reconstruction.
 
 ### 8. Validate destruction
@@ -196,8 +209,8 @@ Start the restore with a unique creation token and the expected KMS key:
 
 ```bash
 EFS_RESTORE_TOKEN="gitops-eks-cluster-efs"
-RESTORE_ROLE_ARN="arn:aws:iam::ACCOUNT_ID:role/clixx-backup-service-role"
-KMS_KEY_ARN="arn:aws:kms:${AWS_REGION}:ACCOUNT_ID:key/KEY_ID"
+RESTORE_ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/clixx-backup-service-role"
+KMS_KEY_ARN="arn:aws:kms:${AWS_REGION}:${AWS_ACCOUNT_ID}:key/KEY_ID"
 
 EFS_RESTORE_JOB_ID="$(
   aws backup start-restore-job \
